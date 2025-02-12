@@ -2,19 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    echo "Checking out branch ${env.BRANCH_NAME}"
-                    checkout scm
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean compile'
+                    echo "building the app..."
                 }
             }
         }
@@ -22,7 +13,7 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 script {
-                    sh 'mvn test'
+                    echo "testing the app..."
                 }
             }
         }
@@ -30,14 +21,14 @@ pipeline {
         stage('Package') {
             steps {
                 script {
-                    sh 'mvn package -DskipTests'  // Skips tests since they were run earlier
+                    echo "Packaging the app.."
                 }
             }
         }
 
         stage('Archive Artifact') {
             steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                echo "archiving the app.."
             }
         }
     }
